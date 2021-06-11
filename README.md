@@ -1,14 +1,18 @@
-# Social Network Analysis
+# Social Network Analysis Project
 
-Social network anlaysis has found utility is institutional, classroom and analyses of networked data in socially-based educational games. However, the utility of the method largely rests on being able to ascribe meaning to the **structure of the network**. Without meaningful interpretation of structure there is no added value to a networked model, you will find more suvccess simply regressing your outcome against student characteristics.  Understanding measures of centrality and network structure in SNA are therefore an important, though difficult, aspect of the method. As with all SNA work, the vocabulary can be daunting though the ideas are relatively intuitive.
+Social network analysis is the process of investigating social structures through the use of networks and graph theory. The purpose of this project is to analyze classroom social structure.
 
-## Goals for this unit
+## Prepare and Task
 
-* Be able to generate a basic sociogram
-* Be able to apply and interpret a range of centrality measures to a network
-* Be able to apply and interpret a range of clustering procedures to a network
+* Data Wrangling
+  Manipulate datasets (best.friends.csv, get.on.with.csv, work.with.csv) to make them suitable for social analysis. 
+  
+* Task
+  1. Who do you get on with in the class?  
+  2. Who are your best friends in the class?  
+  3. Who would you prefer to work with? 
 
-## Tasks for this unit
+## Visualize the Networks
 
 In this unit you will be working towards building several social network diagrams (graphs/sociograms) of a school classroom and then analyzing both centrality measures and clusters within the network. As background to this task please read over the follwing materials and watch the methodological videos. If you find any other useful materials please add them under Additional Materials at the end of the this page and pull request the change back to this repo.
 
