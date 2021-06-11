@@ -2,7 +2,7 @@
 
 Social network analysis is the process of investigating social structures through the use of networks and graph theory. The purpose of this project is to analyze classroom social structure.
 
-## Prepare and Task
+## Preparation and Task
 
 * Data Wrangling
   Manipulate datasets (best.friends.csv, get.on.with.csv, work.with.csv) to make them suitable for social analysis. 
@@ -14,36 +14,38 @@ Social network analysis is the process of investigating social structures throug
 
 ## Visualize the Networks
 
-In this unit you will be working towards building several social network diagrams (graphs/sociograms) of a school classroom and then analyzing both centrality measures and clusters within the network. As background to this task please read over the follwing materials and watch the methodological videos. If you find any other useful materials please add them under Additional Materials at the end of the this page and pull request the change back to this repo.
+According to the gender, visulize networking in the class based on three questions above. We can see some sudents have strong connection while some have weak. For example, students with ID number 18 and 25 are at the outer edge of the network.
 
-## Resources
+## Centrality Measures
 
-## Videos
+By analyzing degree centrality, we can see three students with ID number 11, 8, 6 are the people get the highest scores in corresponding question. Student 11 is the one the most of times each student was chosen by others to get along well with. Student 8 is the one the most of times each student was chosen by others as best friends. Student 6 is the  one the most of times each student was chosen by others as most wanting to work with.
 
-[Williams, N. (2014). Basics of Social Network Analysis.](https://www.youtube.com/watch?v=PT99WF1VEws)
+By analyzing betweeness centrality, we can see who are the people can influence others the most. Degree centrality counts the number of links incident upon a node; Betweeness centrality is a method of determining how often a node influences the flow of information in a graph. It's often used to find nodes that act as a link between two parts of a graph.
 
-[Complexity Labs. (2015). Social Network Analysis Overview.](https://www.youtube.com/watch?v=fgr_g1q2ikA)
+## Simple Sturcture
 
-[Complexity Labs. (2015). Network Centrality.](https://www.youtube.com/watch?v=NgUj8DEH5Tc)
+By using dyad to analyze connections between a pair of people. Then triad is used to perform a triad census of a directed network. 
 
-[Complexity Labs. (2015). Network Clustering & Connectedness.](https://www.youtube.com/watch?v=2Oa7mef77nM)
+dyad census can classify dyad in a graph.It measures the relationship between pair of vertices in 3 status: mutual, asymmetrical, non-existent.Get on with has highest mutual connection which means students tend to choose get on with others than become best friends or prefer work with.
 
-## Knowledge Check
-Once you have completed all tasks in the unit, please complete the [knowledge check](https://tccolumbia.qualtrics.com/jfe/form/SV_eJ0QJWNsklHsdro).
+Triad census counts the different subgraphs of three vertices in a graph.
 
-## Additional Materials
+## Conclusion
+
+In the analysis, we can see student with id = 8 has the highest closeness centrality in best friend part and get on with part. This means this student is popular among peers.From simple structure part, we can see there are 280 non-existent connection in best friend part, it seems like a group of students is exclusive, I recommend teacher to encourage students to strengthen communication between each other.
+
+To improve the analysis, the variable I want to know is the ethnic group. It may help us to analyze social network from the other perspective.
+
+
+## Tools 
+
+R
+RStudio
+
+## Materials
+
 [iGraph. (2016). Get Started with R iGraph](http://igraph.org/r/#docs)
 
 [Social Network Analysis with R - Examples](https://www.youtube.com/watch?v=0xsM0MbRPGE)
 
-### Readings
-
 [Bakharia, A., & Dawson, S. (2011). SNAPP: A Bird’S-eye View of Temporal Participant Interaction. In Proceedings of the 1st International Conference on Learning Analytics and Knowledge (pp. 168–173). Banff, Alberta, Canada:ACM.](https://doi.org/10.1145/2090116.2090144)
-
-[Hanneman, R. & Riddle, M. (2005). Introduction to Social Network Methods. Riverside, CA:  University of California, Riverside](http://faculty.ucr.edu/~hanneman/)  
-  * [Chapter 10: Centrality & Power](http://faculty.ucr.edu/~hanneman/nettext/C10_Centrality.html)  
-  * [Chapter 11: Cliques & Subgroups](http://faculty.ucr.edu/~hanneman/nettext/C11_Cliques.html)  
-
-
-
-
