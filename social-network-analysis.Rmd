@@ -1,0 +1,294 @@
+---
+title: 'HUDK4051: Social Network Analysis'
+author: "Yunzhao Wu"
+date: "3/7/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+In this assignment you will be generating and analyzing three social networks (also known as graphs or sociograms) based on three different measures. You will be using data from:
+
+Representing Classroom Social Structure. Melbourne: Victoria Institute of
+Secondary Education, M. Vickers and S. Chan, (1981)
+
+Available from the Index of Complex Networks ([ICON](https://icon.colorado.edu/#!/))
+
+The data were collected by Vickers & Chan from 29 seventh grade students in a school in Victoria, Australia. Students were asked to nominate their classmates on a number of relations including the following three "layers":  
+
+1. Who do you get on with in the class?  
+2. Who are your best friends in the class?  
+3. Who would you prefer to work with?  
+
+You have a data set for each of these questions, please complete the following tasks.
+
+## Data Wrangling
+
+Manipulate each of the data sets so that it is suitable for building a social network using iGraph.
+
+*If you have not previously taken HUDK4050 please sign up for office hours before you attempt this project*
+
+```{r}
+
+library(tidyr)
+library(dplyr)
+library(igraph)
+
+get_on <- read.csv("get.on.with.csv")
+best_friends <- read.csv("best.friends.csv")
+work_with <- read.csv("work.with.csv")
+
+# edge and vertex
+get_on_edge <- select(get_on, from, to)
+get_on_vertex <- select(get_on, from, gender.from) %>% unique
+
+best_friends_edge <- select(best_friends, from, to)
+best_friends_vertex <- select(best_friends, from, gender.from) %>% unique
+
+work_with_edge <- select(work_with, from, to)
+work_with_vertex <- select(work_with, from, gender.from) %>% unique
+
+```
+
+## Visualize the Networks
+
+Create a graph for each of the data sets, are the graphs directed or undirected? Visualize each of the graphs you have created and color the nodes according to gender. Save pdfs of your graphs in this directory for upload to Github.
+
+```{r}
+
+# 1. Who do you get on with in the class?  Directed
+
+g_graph <- graph.data.frame(get_on_edge, directed = TRUE,
+                            vertices = get_on_vertex)
+
+plot(g_graph, 
+     layout = layout.fruchterman.reingold,
+     edge.arrow.size = .2, 
+     vertex.color = as.factor(get_on_vertex$gender.from))
+
+# 2. Who are your best friends in the class?  Directed
+b_graph <- graph.data.frame(best_friends_edge, directed = TRUE,
+                            vertices = best_friends_vertex)
+
+plot(b_graph, 
+     layout = layout.fruchterman.reingold,
+     edge.arrow.size = .2,
+     vertex.color = as.factor(best_friends_vertex$gender.from))
+
+# 3. Who would you prefer to work with?  Directed
+p_graph <- graph.data.frame(work_with_edge, directed = TRUE,
+                            vertices = work_with_vertex)
+
+plot(p_graph,
+     layout = layout.fruchterman.reingold,
+     edge.arrow.size = .2,
+     vertex.color = as.factor(work_with_vertex$gender.from))
+
+```
+
+## Centrality Measures
+
+Who in the class has the highest degree centrality for each measure?
+```{r}
+# id = 11 has the highest degree centrality
+sort(degree(g_graph), decreasing = TRUE)
+
+# id = 8 has the highest degree centrality
+sort(degree(b_graph), decreasing = TRUE)
+
+# id = 6 has the highest degree centrality
+sort(degree(p_graph), decreasing = TRUE)
+```
+
+Does **degree centrality** mean the same thing for each of your networks? Does it make sense for each of your networks?
+
+```{r}
+# no. it doesn't mean the same thing. The 1st one means the number of times each student was chosen by others to get along with. The 2nd one means the number of times each student was chosen by others as best friends. The 3rd one means the number of times each student was chosen by others as most wanting to work with.
+# I think it make sense.
+```
+
+
+Who in the class has the highest closeness centrality?
+
+```{r}
+
+# id = 8 has the highest closeness centrality in get on with part
+sort(closeness(g_graph), decreasing = TRUE)
+
+# id = 8 has the highest closeness centrality in best friend part
+sort(closeness(b_graph), decreasing = TRUE)
+
+# id = 11 has the highest closeness centrality in prefer to work part
+sort(closeness(p_graph), decreasing = TRUE)
+
+```
+
+How does **betweeness centrality** differ from degree centrality? Is one more useful than the other? Does their utility differ between your three networks?
+
+```{r}
+
+# Degree centrality counts the number of links incident upon a node; Betweeness centrality is a method of determining how often a node influences the flow of information in a graph. It's often used to find nodes that act as a link between two parts of a graph.
+# I think both of them are useful.
+# Yes. Degree centrality indicates how many times students were chosen in different questions. Betweeness centrality indicates how each student lies in a network system, how each one influence others
+
+```
+
+
+## Simple structures
+
+Count the number of dyads and the number and type of triads using the following commands.
+```{r}
+# dyad census of a graph: Classify dyads in a directed graphs. The relationship between each pair of vertices is measured. It can be in three states: mutual, asymmetric or non-existent.
+
+# 121 mutual connections, 119 asymmetrical, 166 non-existent
+dyad_census(g_graph)
+
+# 55 mutual connections, 71 asymmetrical, 280 non-existent
+dyad.census(b_graph)
+
+# 46 mutual connections, 106 asymmetrical, 254 non-existent
+dyad.census(p_graph)
+```
+[Documentation](http://igraph.org/r/doc/dyad_census.html)
+
+```{r}
+
+# Triad census, subgraphs with three vertices:  counts the different subgraphs of three vertices in a graph.
+
+triad_census(g_graph)
+
+triad.census(b_graph)
+
+triad.census(p_graph)
+
+```
+[Documentation](http://igraph.org/r/doc/triad_census.html)
+
+Do these metrics tell you anything about the networks? If so what?
+```{r}
+# dyad census can classify dyad in a graph.It measures the relationship between pair of vertices in 3 status: mutual, asymmetrical, non-existent.Get on with has highest mutual connection which means students tend to choose get on with others than become best friends or prefer work with.
+
+# Triad census counts the different subgraphs of three vertices in a graph.
+```
+
+
+## Cliques
+
+Answer the following questions using the [clique functions](http://igraph.org/r/doc/cliques.html)
+
+What is the size of the largest clique(s) in each of the three networks?
+
+```{r}
+
+# 12 is the largest clique size in get on with network
+clique_num(g_graph)
+
+# 7 is the largest clique size in get on with network
+clique_num(b_graph)
+
+# 9 is the largest clique size in get on with network
+clique_num(p_graph)
+
+```
+
+Which nodes/vertices are in the largest cliques for the three networks? Is there much overlap?
+
+```{r}
+
+# 8  11 27 15 13 24 23 20 14 19 22 26
+largest_cliques(g_graph)
+
+# 23 14 15 19 20 21 22
+largest_cliques(b_graph)
+
+# 6  15 16 14 19 23 20 21 22
+largest_cliques(p_graph)
+
+# yes. much overlap
+
+```
+
+How many **maximal cliques** are there in each of the networks?
+
+```{r}
+
+# 64 in get on with network
+max_cliques(g_graph)
+
+# 35 in best friends network
+max_cliques(b_graph)
+
+# 36 in prefer to work with network
+max_cliques(p_graph)
+```
+
+## Components & Cutpoints
+
+Find the cutpoints (articulation points) for each of the three networks you generated. What does this tell you about the graphs? Does what you find match a visual exploration of the networks?
+
+```{r}
+# 0 cutpoint in get on with network
+articulation.points(g_graph)
+
+# 13 cutpoint in best friends network
+articulation.points(b_graph)
+
+# 13 cutpoint in work with network
+articulation.points(p_graph)
+
+```
+
+
+## Putting it all together
+
+Write a narrative description of the social ties among members of this 7th grade class using the network, centrality and structural metrics you have developed. Can you provide any recommendations to the teacher of this class based on your analysis? What other information would you want to know? Can you remember being in seventh grade, does this reflect your experience?
+
+```{r}
+# In the analysis, from centrality part, we can see student with id = 8 has the highest closeness centrality in best friend part and get on with part. This means this student is popular among peers.From simple structure part, we can see there are 280 non-existent connection in best friend part, it seems like a group of students is exclusive, I recommend teacher to encourage students to strengthen communication between each other.
+# What I want to know is the ethnic group. It may help us to analyze social network from the other perspective
+# Yes.
+```
+
+
+## Test out your skills
+
+Find another data set that interests you on the ([ICON](https://icon.colorado.edu/#!/)) website. Load the data into igraph, visualize the graph and use one of the metrics you have learned to characterize structures within the graph.
+
+```{r}
+
+# read.csv does not work for the file I searched, so I just click 'import dataset' to do the following work
+
+storm1 = matrix(stormofswords)
+storm_graph <- graph.data.frame(stormofswords,
+                               directed = TRUE)
+plot(storm_graph,
+     layout = layout.fruchterman.reingold,
+     edge.arrow.size = .4,
+     vertex.size = .5,
+     vertex.label.cex = .4,
+     edge.arroow.width = .5)
+
+# Tyrion - highest degree centrality
+sort(degree(storm_graph), decreasing = TRUE)
+
+# Tyrion - highest betweeness centrality
+sort(betweenness(storm_graph), decreasing = TRUE)
+
+# Sansa- highest closeness centrality
+sort(closeness(storm_graph), decreasing = TRUE)
+
+# 0 mutual connection, 352 asymmetrical, 5319 non-existent
+dyad_census(storm_graph)
+
+triad_census(storm_graph)
+
+# 7 is the largest clique size
+clique_num(storm_graph)
+
+# Tyrion  Cersei  Gregor  Joffrey Ilyn    Meryn   Sandor 
+largest.cliques(storm_graph)
+
+# 136 max cliques in this network
+max_cliques(storm_graph)
+```
+
