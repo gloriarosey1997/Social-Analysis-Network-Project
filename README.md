@@ -15,6 +15,7 @@ Social network analysis is the process of investigating social structures throug
 ## Visualize the Networks
 
 According to the gender, visulize networking in the class based on three questions above. We can see some sudents have strong connection while some have weak. For example, students with ID number 18 and 25 are at the outer edge of the network.
+
 ![1](https://user-images.githubusercontent.com/70673374/121748469-a5488880-cace-11eb-8e37-21b532bf69fa.png)
 ![2](https://user-images.githubusercontent.com/70673374/121748488-b2657780-cace-11eb-835a-e5939fcb3229.png)
 ![3](https://user-images.githubusercontent.com/70673374/121748496-b5606800-cace-11eb-94bb-f141e72eb07f.png)
