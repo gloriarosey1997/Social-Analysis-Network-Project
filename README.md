@@ -44,7 +44,6 @@ To improve the analysis, the variable I want to know is the ethnic group. It may
 ## Tools 
 
 R
-![1](https://user-images.githubusercontent.com/70673374/121748463-a37ec500-cace-11eb-8f8f-1b3fafaf1109.png)
 
 RStudio
 
